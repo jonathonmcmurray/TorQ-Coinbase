@@ -16,3 +16,9 @@ export KDBBASEPORT=6000
 # export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$KDBLIB/l[32|64]
 # e.g. osx:
 # export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:$KDBLIB/m[32|64]
+
+# SSL verification
+if [[ ! -f $TORQHOME/certs/cabundle.pem ]]; then
+  curl https://curl.haxx.se/ca/cacert.pem > $TORQHOME/certs/cabundle.pem
+fi
+export SSL_CA_CERT_FILE=$TORQHOME/certs/cabundle.pem
