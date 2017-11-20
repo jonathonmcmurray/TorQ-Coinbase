@@ -9,7 +9,7 @@ feed:{
            ask: "F"$first amount where typ like "buy" ,
            spot:"F"$first amount where typ like "spot"
   from a;
-  h(`upd;`btc;t);
+  h(`.u.upd;`btc;t);
  }
 
 .timer.repeat[.proc.cp[];0Wp;0D00:00:30.000;(`feed;`);"Publish Feed"];
