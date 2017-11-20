@@ -1,6 +1,6 @@
 # TorQ-Coinbase
 
-A Coinbase API connector for the TorQ framework
+A [Coinbase API](https://developers.coinbase.com/) connector for the [TorQ](https://github.com/AquaQAnalytics/TorQ) framework
 
 ## Set Up 
 
