@@ -3,7 +3,7 @@
 export TORQHOME=${PWD}/TorQ
 export KDBCONFIG=${TORQHOME}/config
 export KDBCODE=${TORQHOME}/code
-export KDBLOG=${TORQHOME}/logs
+export KDBLOG=${PWD}/logs
 export KDBHTML=${TORQHOME}/html
 export KDBLIB=${TORQHOME}/lib
 

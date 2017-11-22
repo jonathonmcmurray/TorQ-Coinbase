@@ -6,7 +6,11 @@ A [Coinbase API](https://developers.coinbase.com/) connector for the [TorQ](http
 
 Assuming that the [free 32 bit version of kdb+](http://kx.com/software-download.php) is already set up and available from the command prompt as q, then:
 
-Clone this repo, which includes [TorQ](https://github.com/AquaQAnalytics/TorQ) as a submodule
+Clone this repo using the following command, which includes [TorQ](https://github.com/AquaQAnalytics/TorQ) as a submodule:
+
+```
+git clone --recursive https://github.com/jonathonmcmurray/TorQ-Coinbase.git
+```
 
 Configure environment variables as desired in setenv.sh and start_torq_demo.sh
 
