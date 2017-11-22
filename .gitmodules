@@ -1,0 +1,3 @@
+[submodule "TorQ"]
+	path = TorQ
+	url = https://github.com/AquaQAnalytics/TorQ.git
