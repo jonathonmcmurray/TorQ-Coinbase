@@ -38,8 +38,22 @@ start() {
   fi
  }
 
+getall() {
+  procs=`awk -F, '{if(NR>1) print $4}' appconfig/process.csv`
+  start=""
+  for a in $procs;
+  do
+    procno=`awk '/'$a'/{print NR}' appconfig/process.csv`                                           # get line number for file
+    f=`getfield $procno startwithall`
+    if [ " -startwithall 1" == "$f" ]; then
+      start="$start $a"
+    fi
+  done
+  echo $start
+ }
+
 if [ "$1" == "all" ]; then
- procs="discovery1 tickerplant1 rdb1 hdb1 hdb2 wdb1 sort1 gateway1 monitor1 housekeeping1 reporter1 compression1 feed1 chainedtp1 sortslave1 sortslave2"
+ procs=`getall`
 else
  procs=$*
 fi
