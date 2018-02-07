@@ -14,10 +14,10 @@ $env:KDBHTML="${env:TORQHOME}/html"
 $env:KDBLIB="${env:TORQHOME}/lib"
 
 # SSL verification
-
-#if(![System.IO.File]::Exists("certs\cabundle.pem")){
-#  Invoke-WebRequest https://curl.haxx.se/ca/cacert.pem -OutFile certs/cabundle.pem
-#}
+if(![System.IO.File]::Exists("certs/cabundle.pem")){
+  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+  Invoke-WebRequest https://curl.haxx.se/ca/cacert.pem -OutFile certs/cabundle.pem
+}
 $env:SSL_CA_CERT_FILE=("" + (Get-Location) + "/certs/cabundle.pem")
 
 # getfield | get one field from config for one process passed by procname
@@ -35,6 +35,7 @@ function getfield {
     }
 }
 
+# paramter | get one field from config & prepend with command line arg
 function parameter {
     param($procname, $field)
     $str=getfield $procname $field
