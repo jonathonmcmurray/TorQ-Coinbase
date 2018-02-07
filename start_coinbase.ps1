@@ -13,6 +13,13 @@ $env:KDBLOG=("" + (Get-Location) + "/logs")
 $env:KDBHTML="${env:TORQHOME}/html"
 $env:KDBLIB="${env:TORQHOME}/lib"
 
+# SSL verification
+
+#if(![System.IO.File]::Exists("certs\cabundle.pem")){
+#  Invoke-WebRequest https://curl.haxx.se/ca/cacert.pem -OutFile certs/cabundle.pem
+#}
+$env:SSL_CA_CERT_FILE=("" + (Get-Location) + "/certs/cabundle.pem")
+
 # getfield | get one field from config for one process passed by procname
 function getfield {
     param($procname, $field)
@@ -20,13 +27,22 @@ function getfield {
     foreach($proc in $csv){                                                                         # iterate over processes
         if ($proc.procname -eq $procname) {                                                         # find input process
             if ("" -ne $proc.$field) {                                                              # check field is populated
-                $str=(" -" + $field + " " + $proc.$field)                                           # append command line flag
-                $str=$str -replace '\${', '${env:'                                                  # workaround for env vars
+                $str=$proc.$field -replace '\${', '${env:'                                          # workaround for env vars
                 Write-Output $ExecutionContext.InvokeCommand.ExpandString($str)                     # substitute in env vars
             }
             return                                                                                  # return once correct process has been found
         }
     }
+}
+
+function parameter {
+    param($procname, $field)
+    $str=getfield $procname $field
+    if ($str) {
+        $str=(" -" + $field + " " + $str)                                                           # append command line flag
+        Write-Output $str
+    }
+
 }
 
 # startstr | generate startup string for one proc passed by procname
@@ -35,10 +51,11 @@ function startstr {
     $params = "proctype U localtime g T w load schemafile tplogdir"                                 # params to load
     $start = "${env:TORQHOME}\torq.q -procname $procname ${env:KDBSTACKID}"                         # basic command line
     foreach($p in $params.split(" ")) {                                                             # iterate over params
-        $a = getfield $procname $p                                                                  # get each param
+        $a = parameter $procname $p                                                                 # get each param
         $start = ($start + $a)                                                                      # append to start string
     }
-    Write-Output $start                                                                             # output startup string
+    $a = getfield $procname extras                                                                  # get extra fields
+    Write-Output ($start + " " + $a)                                                                # output startup string
 }
 
 # runproc | run one process passed by procname
