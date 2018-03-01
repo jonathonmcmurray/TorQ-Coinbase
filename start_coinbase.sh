@@ -10,7 +10,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$KDBLIB/l32
 getfield() {
   fieldno=`awk -F, '{if(NR==1) for(i=1;i<=NF;i++){if($i=="'$2'") print i}}' appconfig/process.csv`  # get number for field based on headers
   fieldval=`awk -F, '{if(NR == '$1') print $'$fieldno'}' appconfig/process.csv`                     # pull one field from one line of file
-  echo $fieldval | envsubst                                                                       # substitute env vars
+  echo $fieldval | envsubst                                                                         # substitute env vars
  }
 
 parameter() {
@@ -38,7 +38,7 @@ start() {
     done
     sline="$sline $(getfield $procno extras)"
     echo "Starting $1..."
-    echo "${sline} </dev/null >${KDBLOG}/torq${1}.txt 2>&1 &"                                       # redirect output and run in background
+    eval "${sline} </dev/null >${KDBLOG}/torq${1}.txt 2>&1 &"                                       # redirect output and run in background
   else
     echo "$1 already running"
   fi
